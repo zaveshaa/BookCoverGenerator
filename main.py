@@ -5,7 +5,7 @@ from typing import List, Tuple
 #TODO:
 # footnote of large titles
 # change color of cover and font color
-# name of cover = tittle book
+
 
 def create_book_cover(title: str, author: str, output_path: str, width: int = 600, height: int = 900, background_color: Tuple[int, int, int] = (255, 228, 196), title_color: Tuple[int, int, int] = (0, 0, 0), author_color: Tuple[int, int, int] = (0, 0, 0)) -> None:
     cover = Image.new('RGB', (width, height), color=background_color)
@@ -34,6 +34,9 @@ def create_book_cover(title: str, author: str, output_path: str, width: int = 60
 
     cover.save(output_path)
 
+def sanitize_filename(name: str) -> str:
+    return "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
+
 def generate_covers_from_file(file_path: str) -> None:
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = [line.strip() for line in file if line.strip()]
@@ -48,8 +51,9 @@ def generate_covers_from_file(file_path: str) -> None:
     output_dir = os.path.join(os.path.dirname(file_path), "covers")
     os.makedirs(output_dir, exist_ok=True)
 
-    for i, (title, author) in enumerate(book_data):
-        output_path = os.path.join(output_dir, f"cover_{i + 1}.png")
+    for title, author in book_data:
+        sanitized_title = sanitize_filename(title)
+        output_path = os.path.join(output_dir, f"{sanitized_title}.png")
         create_book_cover(title, author, output_path)
         print(f"Created cover for '{title}' by {author} at {output_path}")
 
