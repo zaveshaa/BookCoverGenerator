@@ -7,9 +7,8 @@ def create_book_cover(title: str, author: str, output_path: str, width: int = 60
     draw = ImageDraw.Draw(cover)
 
     try:
-        font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'arial.ttf')
-        title_font = ImageFont.truetype(font_path, 60)
-        author_font = ImageFont.truetype(font_path, 40)
+        title_font = ImageFont.truetype("arial.ttf", 60)
+        author_font = ImageFont.truetype("arial.ttf", 40)
     except IOError:
         title_font = ImageFont.load_default()
         author_font = ImageFont.load_default()
